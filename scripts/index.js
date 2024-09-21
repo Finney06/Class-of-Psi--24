@@ -1,3 +1,11 @@
+require('dotenv').config();
+
+// Use the environment variables like this
+const airtableApiKey = process.env.AIRTABLE_API_KEY;
+const cloudinaryUrl = process.env.CLOUDINARY_URL;
+const cloudinaryPreset = process.env.CLOUDINARY_PRESET;
+const airtableBaseId = process.env.AIRTABLE_BASE_ID;
+const airtableTableId = process.env.AIRTABLE_TABLE_ID;
 // Define submitForm function
 async function submitForm(event) {
     event.preventDefault(); // Prevent form submission
@@ -42,10 +50,9 @@ require('dotenv').config()
   
     try {
         // Upload image to Cloudinary
-        const cloudinaryUrl = process.env.CLOUDINARY_URL;
         const formDataCloudinary = new FormData();
         formDataCloudinary.append('file', file);
-        formDataCloudinary.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET); // Set Cloudinary upload preset
+        formDataCloudinary.append('upload_preset', cloudinaryPreset); // Set Cloudinary upload preset
   
         const cloudinaryResponse = await fetch(cloudinaryUrl, {
             method: 'POST',
@@ -60,11 +67,11 @@ require('dotenv').config()
         formData.Picture[0].url = cloudinaryData.secure_url; // Update the Picture URL in the formData object
   
         // Send form data to Airtable via API
-        const airtableResponse = await fetch(process.env.AIRTABLE_URL, {
+        const airtableResponse = await fetch(`https://api.airtable.com/v0/${airtableBaseId}/${airtableTableId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': process.env.AIRTABLE_API_KEY
+                'Authorization': `Bearer ${airtableApiKey}`
             },
             body: JSON.stringify({
                 records: [
@@ -105,7 +112,7 @@ require('dotenv').config()
     const response = await fetch(`https://api.airtable.com/v0/appufz5VPar7viZy0/tblmXStbPbBj88Z5E?filterByFormula=SEARCH('${email}', Email)`, {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer patMBlQYlVo3H5wZU.5a353c102f5a4090215697499350e6d7bfcf285e61c3592e663cf6692a483fac'
+            'Authorization':  process.env.AIRTABLE_API_KEY
         }
     });
   

@@ -1,8 +1,8 @@
 // import fetch from 'node-fetch'
-
+require('dotenv').config();
 const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
-const fs = require('fs');
+// const fs = require('fs');
 const birthdayMessages = require('./birthdayMessages');
 
 const client = new Client({
@@ -29,11 +29,11 @@ client.initialize();
 // Function to fetch Airtable records and send birthday messages
 async function sendBirthdayMessages() {
     try {
-        const airtableApiKey = 'patMBlQYlVo3H5wZU.5a353c102f5a4090215697499350e6d7bfcf285e61c3592e663cf6692a483fac'; // Replace with your API key
-        const baseId = 'appufz5VPar7viZy0';
-        const tableName = 'tblmXStbPbBj88Z5E';
+        const airtableApiKey = process.env.AIRTABLE_API_KEY; 
+        const baseId = process.env.AIRTABLE_BASE_ID; 
+        const tableName = process.env.AIRTABLE_TABLE_ID; 
+        const groupNumber = process.env.GROUP_CHAT_ID;
         const apiUrl = `https://api.airtable.com/v0/${baseId}/${tableName}`;
-        const groupNumber = '120363304273062405@g.us';  // Group chat ID
 
         const response = await fetch(apiUrl, {
             headers: {
