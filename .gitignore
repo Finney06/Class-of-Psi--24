@@ -1,0 +1,5 @@
+.env
+node_modules
+scripts/.wwebjs_auth
+scripts/.wwebjs_cache
+scripts/rough_work
